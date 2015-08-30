@@ -23,10 +23,8 @@ scalacOptions ++= Seq(
 
 conflictManager := ConflictManager.strict
 
-dependencyOverrides <+= (scalaVersion) { "org.scala-lang" % "scala-library" % _ }
-
-dependencyOverrides <+= (scalaVersion) { "org.scala-lang" % "scala-reflect" % _ }
-
+dependencyOverrides <+= scalaVersion { "org.scala-lang" % "scala-library" % _ }
+dependencyOverrides <+= scalaVersion { "org.scala-lang" % "scala-reflect" % _ }
 dependencyOverrides += "org.scala-lang.modules" %% "scala-xml" % "1.0.4"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5" % "test"
