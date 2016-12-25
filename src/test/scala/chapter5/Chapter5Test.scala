@@ -1,8 +1,8 @@
+package chapter5
+
 import org.scalatest.FlatSpec
 
 class Chapter5Test extends FlatSpec {
-
-  import Chapter5._
 
   "toList" should "" in {
     assert(Stream(1, 2, 3).toList == List(1, 2, 3))

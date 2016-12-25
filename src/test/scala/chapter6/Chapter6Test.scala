@@ -1,8 +1,10 @@
+package chapter6
+
 import org.scalatest.FlatSpec
 
 class Chapter6Test extends FlatSpec {
 
-  import Chapter6._, RNG._
+  import RNG._
 
   "nonNegativeInt" should "" in {
     val intMinValueRng = new RNG {

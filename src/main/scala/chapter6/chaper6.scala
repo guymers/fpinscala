@@ -1,4 +1,6 @@
-object Chapter6 {
+package chapter6
+
+import scala.annotation.tailrec
 
   trait RNG {
     def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
@@ -99,11 +101,11 @@ object Chapter6 {
     // 6.7
     def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
       fs.foldRight(unit(List.empty[A]))((rand, acc) => map2(rand, acc)(_ :: _))
-//      rng => {
-//        fs.foldLeft((List.empty[A], rng)) { case ((l, r), rand) =>
-//          map(rand)(_ :: l)(r)
-//        }
-//      }
+  //      rng => {
+  //        fs.foldLeft((List.empty[A], rng)) { case ((l, r), rand) =>
+  //          map(rand)(_ :: l)(r)
+  //        }
+  //      }
 
     def intsSequence(count: Int): Rand[List[Int]] =
       sequence(List.fill(count)(int))
@@ -115,12 +117,15 @@ object Chapter6 {
         g(a)(nextRng)
       }
 
-    def nonNegativeLessThan(n: Int): Rand[Int] = { rng =>
-      val (i, rng2) = nonNegativeInt(rng)
-      val mod = i % n
-      if (i + (n-1) - mod >= 0)
-        (mod, rng2)
-      else nonNegativeLessThan(n)(rng)
+    def nonNegativeLessThan(n: Int): Rand[Int] = {
+      @tailrec
+      def go(rng: RNG): (Int, RNG) = {
+        val (i, rng2) = nonNegativeInt(rng)
+        val mod = i % n
+        if (i + (n-1) - mod >= 0) (mod, rng2)
+        else go(rng2)
+      }
+      go
     }
 
     def nonNegativeLessThanWithFlatMap(n: Int): Rand[Int] =
@@ -176,11 +181,11 @@ object Chapter6 {
     // ANS: foldRight to preserve order
     def sequence[S, A](ls: List[State[S, A]]): State[S, List[A]] =
       ls.foldRight(unit[S, List[A]](List.empty))((rand, acc) => rand.map2(acc)(_ :: _))
-//    State { s =>
-//      ls.foldLeft((List.empty[A], s)) { case ((list, prevState), state) =>
-//        state.map(_ :: list).run(prevState)
-//      }
-//    }
+  //    State { s =>
+  //      ls.foldLeft((List.empty[A], s)) { case ((list, prevState), state) =>
+  //        state.map(_ :: list).run(prevState)
+  //      }
+  //    }
   }
 
   // 6.11
@@ -191,16 +196,16 @@ object Chapter6 {
   case class Machine(locked: Boolean, candies: Int, coins: Int) {
 
     /**
-     * The rules of the machine are as follows:
-     *
-     *   Inserting a coin into a locked machine will cause it to unlock if there’s any candy left.
-     *   Turning the knob on an unlocked machine will cause it to dispense candy and become locked.
-     *   Turning the knob on a locked machine or inserting a coin into an unlocked machine does nothing.
-     *   A machine that’s out of candy ignores all inputs.
-     *
-     * @param input
-     * @return
-     */
+      * The rules of the machine are as follows:
+      *
+      *   Inserting a coin into a locked machine will cause it to unlock if there’s any candy left.
+      *   Turning the knob on an unlocked machine will cause it to dispense candy and become locked.
+      *   Turning the knob on a locked machine or inserting a coin into an unlocked machine does nothing.
+      *   A machine that’s out of candy ignores all inputs.
+      *
+      * @param input
+      * @return
+      */
     def apply(input: Input): Machine = {
       if (candies <= 0) {
         this
@@ -221,11 +226,11 @@ object Chapter6 {
 
     val buyCandy = List(Coin, Turn)
 
-//    def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = State { machine =>
-//      val t = inputs.foldLeft(machine)((m, input) => m.apply(input))
-//
-//      ((t.coins, t.candies), t)
-//    }
+  //    def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = State { machine =>
+  //      val t = inputs.foldLeft(machine)((m, input) => m.apply(input))
+  //
+  //      ((t.coins, t.candies), t)
+  //    }
     def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = for {
       _ <- sequence(inputs.map { input =>
         modify[Machine](_ apply input)
@@ -233,4 +238,3 @@ object Chapter6 {
       machine <- get
     } yield (machine.coins, machine.candies)
   }
-}

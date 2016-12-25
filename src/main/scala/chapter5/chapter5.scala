@@ -1,6 +1,6 @@
-import scala.annotation.tailrec
+package chapter5
 
-object Chapter5 {
+import scala.annotation.tailrec
 
   trait Stream[+A] {
 
@@ -116,6 +116,9 @@ object Chapter5 {
         }
       }
 
+    def zip[B](s: Stream[B]): Stream[(A, B)] =
+      zipAll(s).map { case (a, b) => (a.get, b.get) }
+
     // 5.14
     def startsWith[B](s: Stream[B]): Boolean =
       zipAll(s)
@@ -206,5 +209,3 @@ object Chapter5 {
         Some((cur, (cur, next)))
       }
   }
-
-}
