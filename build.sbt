@@ -1,4 +1,4 @@
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.1"
 
 // https://tpolecat.github.io/2014/04/11/scalac-flags.html
 scalacOptions ++= Seq(
@@ -10,7 +10,6 @@ scalacOptions ++= Seq(
   "-language:implicitConversions",
   "-language:postfixOps",
   "-unchecked",
-  "-target:jvm-1.8",
   "-Xfatal-warnings",
   "-Xfuture",
   "-Xlint",
@@ -23,8 +22,8 @@ scalacOptions ++= Seq(
 
 conflictManager := ConflictManager.strict
 
-dependencyOverrides <+= scalaVersion { "org.scala-lang" % "scala-library" % _ }
-dependencyOverrides <+= scalaVersion { "org.scala-lang" % "scala-reflect" % _ }
-dependencyOverrides += "org.scala-lang.modules" %% "scala-xml" % "1.0.4"
+dependencyOverrides += { "org.scala-lang" % "scala-library" % scalaVersion.value }
+dependencyOverrides += { "org.scala-lang" % "scala-reflect" % scalaVersion.value }
+dependencyOverrides += "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.5" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
