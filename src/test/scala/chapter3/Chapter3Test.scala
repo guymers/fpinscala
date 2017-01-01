@@ -1,8 +1,9 @@
+package chapter3
+
 import org.scalatest.FlatSpec
 
 class Chapter3Test extends FlatSpec {
 
-  import Chapter3._
   import List._
 
   "3.1" should "be 3" in {

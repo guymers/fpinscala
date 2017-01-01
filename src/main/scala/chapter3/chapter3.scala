@@ -1,6 +1,6 @@
-import scala.annotation.tailrec
+package chapter3
 
-object Chapter3 {
+import scala.annotation.tailrec
 
   sealed trait List[+A]
 
@@ -195,4 +195,3 @@ object Chapter3 {
     def maximumF(tree: Tree[Int]): Int = fold(tree)(a => a)(_ max _)
     def depthF[A](tree: Tree[A]): Int = fold(tree)(_ => 0)((d1: Int, d2: Int) => 1 + (d1 max d2))
   }
-}
