@@ -30,7 +30,7 @@ class Chapter8Test extends FlatSpec {
 
     val list = List.fill(50)(s)
     val r = State.sequence(list).run(rng)
-    val grouped = r._1.groupBy(identity).mapValues(_.length)
+    val grouped = r._1.groupBy(identity).view.mapValues(_.length).toMap
     println(grouped)
   }
 
@@ -50,7 +50,7 @@ class Chapter8Test extends FlatSpec {
     val r = gen.sample.run(rng)
     assert(r._1.forall(n => n >= 5 && n < 10))
 
-    val grouped = r._1.groupBy(identity).mapValues(_.length)
+    val grouped = r._1.groupBy(identity).view.mapValues(_.length).toMap
     println(grouped)
   }
 
@@ -62,7 +62,7 @@ class Chapter8Test extends FlatSpec {
 
     val list = List.fill(50)(s)
     val r = State.sequence(list).run(rng)
-    val grouped = r._1.groupBy(identity).mapValues(_.length)
+    val grouped = r._1.groupBy(identity).view.mapValues(_.length).toMap
     println(grouped)
   }
 
@@ -74,16 +74,16 @@ class Chapter8Test extends FlatSpec {
 
     val list = List.fill(50)(gen.sample)
     val r = State.sequence(list).run(rng)
-    val grouped = r._1.groupBy(identity).mapValues(_.length)
+    val grouped = r._1.groupBy(identity).view.mapValues(_.length).toMap
     println(grouped)
   }
 
   "gen" should "maxProp empty fails" in {
-    val smallInt = Gen.choose(-10, 10)
-    val maxProp = SGen.forAll(SGen.listOf(smallInt)) { ns =>
-      val max = ns.max
-      !ns.exists(_ > max)
-    }
+//    val smallInt = Gen.choose(-10, 10)
+//    val maxProp = SGen.forAll(SGen.listOf(smallInt)) { ns =>
+//      val max = ns.max
+//      !ns.exists(_ > max)
+//    }
     //Prop.run(maxProp)
   }
 

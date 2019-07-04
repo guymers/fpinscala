@@ -1,48 +1,51 @@
 package chapter9
 
-import org.scalatest.{EitherValues, FlatSpec}
+import org.scalatest.FlatSpec
 
-class Chapter9Test extends FlatSpec with EitherValues {
+class Chapter9Test extends FlatSpec {
   import chapter9.JSON._
 
   "json parser" should "parse primitives" in {
-    assert(JsonParser.run("null").right.value === JNull)
-    assert(JsonParser.run("true").right.value === JBool(true))
-    assert(JsonParser.run("false").right.value === JBool(false))
-    assert(JsonParser.run("123").right.value === JNumber(123D))
-    assert(JsonParser.run("123.45").right.value === JNumber(123.45D))
-    assert(JsonParser.run(""""string"""").right.value === JString("string"))
+    assert(JsonParser.run("null") == Right(JNull))
+    assert(JsonParser.run("true") == Right(JBool(true)))
+    assert(JsonParser.run("false") == Right(JBool(false)))
+    assert(JsonParser.run("123") == Right(JNumber(123D)))
+    assert(JsonParser.run("123.45") == Right(JNumber(123.45D)))
+    assert(JsonParser.run(""""string"""") == Right(JString("string")))
   }
 
   "json parser" should "parse arrays" in {
-    assert(JsonParser.run("[]").right.value === JArray(Vector.empty))
-    assert(JsonParser.run("[123]").right.value === JArray(Vector(JNumber(123D))))
-    assert(JsonParser.run("""[123, "string"]""").right.value === JArray(Vector(JNumber(123D), JString("string"))))
+    assert(JsonParser.run("[]") == Right(JArray(Vector.empty)))
+    assert(JsonParser.run("[123]") == Right(JArray(Vector(JNumber(123D)))))
+    assert(JsonParser.run("""[123, "string"]""") == Right(JArray(Vector(JNumber(123D), JString("string")))))
     assert(JsonParser.run("""[123"string"]""").isLeft)
     assert(JsonParser.run("""[123 "string"]""").isLeft)
 
     assert(
-      JsonParser.run("""[[123, 456], ["a", "b"]]""").right.value ===
+      JsonParser.run("""[[123, 456], ["a", "b"]]""") == Right(
         JArray(Vector(
           JArray(Vector(JNumber(123D), JNumber(456D))),
           JArray(Vector(JString("a"), JString("b")))
         ))
+      )
     )
   }
 
   "json parser" should "parse objects" in {
-    assert(JsonParser.run("{}").right.value === JObject(Map.empty))
-    assert(JsonParser.run("""{"key" : "value"}""").right.value === JObject(Map("key" -> JString("value"))))
+    assert(JsonParser.run("{}") == Right(JObject(Map.empty)))
+    assert(JsonParser.run("""{"key" : "value"}""") == Right(JObject(Map("key" -> JString("value")))))
     assert(
-      JsonParser.run("""{"key": "value", "num": 123}""").right.value ===
+      JsonParser.run("""{"key": "value", "num": 123}""") == Right(
         JObject(Map("key" -> JString("value"), "num" -> JNumber(123D)))
+      )
     )
     assert(JsonParser.run("""{"key":"value""num":123}""").isLeft)
     assert(JsonParser.run("""{"key" : "value" "num" : 123}""").isLeft)
 
     assert(
-      JsonParser.run("""{"key":["a","b"]}""").right.value ===
+      JsonParser.run("""{"key":["a","b"]}""") == Right(
         JObject(Map("key" -> JArray(Vector(JString("a"), JString("b")))))
+      )
     )
   }
 }

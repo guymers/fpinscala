@@ -131,8 +131,8 @@ class Chapter10Test extends FlatSpec with EitherValues {
   }
 
   "Foldable" should "toList" in {
-    val s = (1 to 5).toStream
-    val l = Foldable.stream.toList(s)
+    val s = (1 to 5).to(LazyList)
+    val l = Foldable.lazyList.toList(s)
     assert(l == List(1, 2, 3, 4, 5))
   }
 

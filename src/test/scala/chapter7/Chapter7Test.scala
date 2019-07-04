@@ -16,7 +16,7 @@ class Chapter7Test extends FlatSpec {
   }
 
   "blocking" should "parFilter" in {
-    val a = List(Par.unit(1), Par.unit(2), Par.unit(3))
+//    val a = List(Par.unit(1), Par.unit(2), Par.unit(3))
     val s = Par.parFilter(List(1, 2, 3, 4))(_ % 2 == 0)
     val r = Par.run(es)(s)
     assert(r.get === List(2, 4))

@@ -228,10 +228,10 @@ object Foldable {
       as.foldLeft(z)(f)
   }
 
-  val stream = new Foldable[Stream] {
-    override def foldRight[A, B](as: Stream[A])(z: B)(f: (A, B) => B): B =
+  val lazyList = new Foldable[LazyList] {
+    override def foldRight[A, B](as: LazyList[A])(z: B)(f: (A, B) => B): B =
       as.foldRight(z)(f)
-    override def foldLeft[A, B](as: Stream[A])(z: B)(f: (B, A) => B): B =
+    override def foldLeft[A, B](as: LazyList[A])(z: B)(f: (B, A) => B): B =
       as.foldLeft(z)(f)
   }
 

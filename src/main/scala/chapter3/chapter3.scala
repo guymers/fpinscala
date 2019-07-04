@@ -127,7 +127,7 @@ import scala.annotation.tailrec
       @tailrec
       def go(l: List[A]): Boolean = l match {
         case Nil => false
-        case Cons(x, xs) => hasSubseq(l, sub) || go(xs)
+        case Cons(_, xs) => hasSubseq(l, sub) || go(xs)
       }
       go(sup)
     }
@@ -175,7 +175,7 @@ import scala.annotation.tailrec
 
     // 3.27
     def depth[A](tree: Tree[A]): Int = tree match {
-      case Leaf(value) => 0
+      case Leaf(_) => 0
       case Branch(left, right) => 1 + (depth(left) max depth(right))
     }
 

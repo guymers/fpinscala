@@ -122,7 +122,7 @@ import scala.annotation.tailrec
     // 5.14
     def startsWith[B](s: Stream[B]): Boolean =
       zipAll(s)
-        .takeWhile { case (h1, h2) => h2.isDefined }
+        .takeWhile { case (_, h2) => h2.isDefined }
         .forAll { case (h1, h2) =>
           val equal = for {
            hh1 <- h1

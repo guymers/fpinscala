@@ -1,29 +1,33 @@
-scalaVersion := "2.12.1"
+scalaVersion := "2.13.0"
 
-// https://tpolecat.github.io/2014/04/11/scalac-flags.html
+// https://tpolecat.github.io/2017/04/25/scalac-flags.html
 scalacOptions ++= Seq(
   "-deprecation",
   "-encoding", "UTF-8",
+  "-explaintypes",
   "-feature",
   "-language:existentials",
   "-language:higherKinds",
   "-language:implicitConversions",
   "-language:postfixOps",
   "-unchecked",
+  "-Xcheckinit",
   "-Xfatal-warnings",
-  "-Xfuture",
-  "-Xlint",
-  "-Yno-adapted-args",
-  "-Ywarn-dead-code",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-unused-import",
-  "-Ywarn-value-discard"
+  "-Wdead-code",
+  "-Wextra-implicit",
+  "-Wnumeric-widen",
+  "-Wunused:implicits",
+  "-Wunused:imports",
+  "-Wunused:locals",
+  //"-Wunused:params",
+  "-Wunused:patvars",
+  "-Wunused:privates",
+  "-Wvalue-discard"
 )
 
 conflictManager := ConflictManager.strict
 
-dependencyOverrides += { "org.scala-lang" % "scala-library" % scalaVersion.value }
-dependencyOverrides += { "org.scala-lang" % "scala-reflect" % scalaVersion.value }
-dependencyOverrides += "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+dependencyOverrides += scalaOrganization.value % "scala-library" % scalaVersion.value
+dependencyOverrides += scalaOrganization.value % "scala-reflect" % scalaVersion.value
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % Test
