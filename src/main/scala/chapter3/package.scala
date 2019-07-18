@@ -62,7 +62,7 @@ package object chapter3 {
     }
 
     // 3.10
-    def foldLeft[A, B](ls: List[A], z: B)(f: (B, A) => B): B = ls match {
+    @tailrec def foldLeft[A, B](ls: List[A], z: B)(f: (B, A) => B): B = ls match {
       case Nil => z
       case Cons(h, t) => foldLeft(t, f(z, h))(f)
     }
