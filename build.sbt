@@ -12,6 +12,7 @@ scalacOptions ++= Seq(
   "-language:postfixOps",
   "-unchecked",
   "-Xcheckinit",
+  "-Xlint:_",
   "-Xfatal-warnings",
   "-Wdead-code",
   "-Wextra-implicit",
@@ -22,7 +23,7 @@ scalacOptions ++= Seq(
   //"-Wunused:params",
   "-Wunused:patvars",
   "-Wunused:privates",
-  "-Wvalue-discard"
+  "-Wvalue-discard",
 )
 
 conflictManager := ConflictManager.strict
