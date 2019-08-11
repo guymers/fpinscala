@@ -1,12 +1,12 @@
 package chapter6
 
-import org.scalatest.FlatSpec
+import org.scalatest.FreeSpec
 
-class Chapter6Test extends FlatSpec {
+class Chapter6Test extends FreeSpec {
 
   import RNG._
 
-  "nonNegativeInt" should "" in {
+  "nonNegativeInt" in {
     val intMinValueRng = new RNG {
       override def nextInt: (Int, RNG) = (Int.MinValue, Simple(1))
     }
@@ -14,7 +14,7 @@ class Chapter6Test extends FlatSpec {
     assert(r != Int.MinValue)
   }
 
-  "double" should "" in {
+  "double" in {
     val (r, _) = double(Simple(1))
     assert(r >= 0 && r < 1)
 
@@ -24,7 +24,7 @@ class Chapter6Test extends FlatSpec {
     assert(r == r2)
   }
 
-  "ints" should "" in {
+  "ints" in {
     val rng: RNG = Simple(4)
     val (ints1, _) = ints(5)(rng)
     val size1 = ints1.size
@@ -37,7 +37,7 @@ class Chapter6Test extends FlatSpec {
     assert(ints1 == ints2)
   }
 
-  "nonNegativeLessThan" should "" in {
+  "nonNegativeLessThan" in {
     val rng: RNG = Simple(10)
 
     val (r1, _) = nonNegativeLessThan(5)(rng)
@@ -46,7 +46,7 @@ class Chapter6Test extends FlatSpec {
     assert(r1 == r2)
   }
 
-  "machine" should "" in {
+  "machine" in {
     val buy4 = List.fill(4)(Machine.buyCandy).flatten
     val machine = Machine(locked = true, coins = 10, candies = 5)
     val result = Machine.simulateMachine(buy4).run(machine)
