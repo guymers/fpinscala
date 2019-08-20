@@ -1,8 +1,11 @@
-package chapter7
+package chapter7.nonblocking
 
-import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
-import java.util.concurrent.{Callable,ExecutorService}
-import annotation.tailrec
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
+
+import scala.annotation.tailrec
 
 /*
  * Implementation is taken from `scalaz` library, with only minor changes. See:

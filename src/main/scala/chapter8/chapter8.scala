@@ -4,7 +4,7 @@ import java.util.concurrent.Executors
 
 import chapter5.Stream
 import chapter6.{RNG, State}
-import chapter7.Par.Par
+import chapter7.Par
 import chapter8.Prop.{FailedCase, MaxSize, SuccessCount, TestCases}
 
 // 8.3

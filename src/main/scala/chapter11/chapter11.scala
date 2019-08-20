@@ -106,10 +106,10 @@ object Monad {
   }
 
   // 11.1
-  val parMonad = new Monad[Par.Par] {
-    override def unit[A](a: => A): Par.Par[A] =
+  val parMonad = new Monad[Par] {
+    override def unit[A](a: => A): Par[A] =
       Par.unit(a)
-    override def flatMap[A, B](ma: Par.Par[A])(f: A => Par.Par[B]): Par.Par[B] =
+    override def flatMap[A, B](ma: Par[A])(f: A => Par[B]): Par[B] =
       Par.flatMap(ma)(f)
   }
 
