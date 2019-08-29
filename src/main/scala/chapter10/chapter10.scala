@@ -46,15 +46,15 @@ object Monoid {
 
   // 10.4
   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop = {
-    val leftIdentity = Gen.forAll(gen) { x =>
+    val leftIdentity = Prop.forAll(gen) { x =>
       m.op(x, m.zero) == x
     }
-    val rightIdentity = Gen.forAll(gen) { x =>
+    val rightIdentity = Prop.forAll(gen) { x =>
       m.op(m.zero, x) == x
     }
     // ANS: flatmap instead of product
     val tripleGen = (gen ** gen ** gen).map(v => (v._1._1, v._1._2, v._2))
-    val associative = Gen.forAll(tripleGen) { case (x, y, z) =>
+    val associative = Prop.forAll(tripleGen) { case (x, y, z) =>
       m.op(m.op(x, y), z) == m.op(x, m.op(y, z))
     }
     leftIdentity && rightIdentity && associative

@@ -1,6 +1,5 @@
 package chapter10
 
-import chapter6.RNG
 import chapter8._
 import org.scalatest.{EitherValues, FlatSpec}
 
@@ -13,22 +12,22 @@ class Chapter10Test extends FlatSpec with EitherValues {
 
   "monoid laws" should "hold for int addition" in {
     val prop = Monoid.monoidLaws(Monoid.intAddition, intGen)
-    run(prop)
+    Prop.run(prop)
   }
 
   "monoid laws" should "hold for int multiplication" in {
     val prop = Monoid.monoidLaws(Monoid.intMultiplication, intGen)
-    run(prop)
+    Prop.run(prop)
   }
 
   "monoid laws" should "hold for boolean or" in {
     val prop = Monoid.monoidLaws(Monoid.booleanOr, booleanGen)
-    run(prop)
+    Prop.run(prop)
   }
 
   "monoid laws" should "hold for boolean and" in {
     val prop = Monoid.monoidLaws(Monoid.booleanAnd, booleanGen)
-    run(prop)
+    Prop.run(prop)
   }
 
   "monoid laws" should "hold for options" in {
@@ -36,7 +35,7 @@ class Chapter10Test extends FlatSpec with EitherValues {
       Monoid.optionMonoid[Int],
       (booleanGen ** booleanGen ** intGen).map(v => if (!v._1._1 && !v._1._2) None else Some(v._2))
     )
-    run(prop)
+    Prop.run(prop)
   }
 
 //  "monoid laws" should "hold for endo" in {
@@ -107,7 +106,7 @@ class Chapter10Test extends FlatSpec with EitherValues {
         }
       }
     )
-    run(prop)
+    Prop.run(prop)
   }
 
   "create WC" should "" in {
@@ -141,23 +140,11 @@ class Chapter10Test extends FlatSpec with EitherValues {
       Monoid.productMonoid(Monoid.intAddition, Monoid.intMultiplication),
       intGen ** intGen
     )
-    run(prop)
+    Prop.run(prop)
   }
 
   "bag" should "" in {
     val ans = Monoid.bag(Vector("a", "rose", "is", "a", "rose"))
     assert(ans === Map("a" -> 2, "rose" -> 2, "is" -> 1))
   }
-
-  private def run(
-    p: Prop,
-    maxSize: Int = 100,
-    testCases: Int = 100,
-    rng: RNG = RNG.Simple(System.currentTimeMillis())
-  ): Unit =
-    p.run(maxSize, testCases, rng) match {
-      case Falsified(msg, n) => fail(s"! Falsified after $n passed tests:\n $msg")
-      case Passed => println(s"+ OK, passed $testCases tests.")
-      case Proved => println(s"+ OK, proved property.")
-    }
 }
