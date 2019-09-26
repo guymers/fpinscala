@@ -31,4 +31,6 @@ conflictManager := ConflictManager.strict
 dependencyOverrides += scalaOrganization.value % "scala-library" % scalaVersion.value
 dependencyOverrides += scalaOrganization.value % "scala-reflect" % scalaVersion.value
 
+addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3")
+
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % Test

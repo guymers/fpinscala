@@ -4,7 +4,9 @@ import chapter8.{Gen, Prop}
 
 import scala.util.matching.Regex
 
-trait Parsers[ParseError, Parser[+_]] { self =>
+case class ParseError(error: String)
+
+trait Parsers[Parser[+_]] { self =>
 
   val digits: Parser[Int] = regex("[0-9]+".r).map(_.toInt)
 
@@ -88,7 +90,6 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 // 9.9
 object JsonParser {
 
-  type ParseError = String
   case class ParseSuccess[+A](value: A, strValue: String, remainingInput: String)
   type ParseResult[+A] = Either[ParseError, ParseSuccess[A]]
 
@@ -96,7 +97,7 @@ object JsonParser {
     def parse(input: String): ParseResult[A]
   }
 
-  val parsers = new Parsers[ParseError, JsonParser] {
+  val parsers = new Parsers[JsonParser] {
     override def succeed[A](a: A): JsonParser[A] = new JsonParser[A] {
       override def parse(input: String): ParseResult[A] = {
         Right(ParseSuccess(a, "", input))
@@ -108,13 +109,13 @@ object JsonParser {
         if (input.startsWith(s)) {
           val (v, remain) = input.splitAt(s.length)
           Right(ParseSuccess(v, v, remain))
-        } else Left(s"'${input.drop(s.length)}' does not match '$s'")
+        } else Left(ParseError(s"'${input.drop(s.length)}' does not match '$s'"))
       }
       override def toString: String = s"string($s)"
     }
     override implicit def regex(r: Regex): JsonParser[String] = new JsonParser[String] {
       override def parse(input: String): ParseResult[String] = {
-        r.findPrefixOf(input).toRight(s"Regex '$r' does not match").map { v =>
+        r.findPrefixOf(input).toRight(ParseError(s"Regex '$r' does not match")).map { v =>
           ParseSuccess(v, v, input.drop(v.length))
         }
       }

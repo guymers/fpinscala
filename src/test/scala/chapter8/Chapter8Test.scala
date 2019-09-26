@@ -22,7 +22,7 @@ class Chapter8Test extends FreeSpec {
       val list = List.fill(50)(s)
       val (result, _) = State.sequence(list).run(rng)
       val grouped = result.groupBy(identity)
-      assert(grouped(5).length === 50)
+      assert(grouped(5).length == 50)
     }
 
     "boolean" in {

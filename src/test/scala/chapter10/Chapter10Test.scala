@@ -52,34 +52,34 @@ class Chapter10Test extends FreeSpec {
     "handle empty sequences" in {
       val v = IndexedSeq.empty[String]
       val ans = Monoid.foldMapV(v, Monoid.stringConcatenation)(identity)
-      assert(ans === "")
+      assert(ans == "")
     }
 
     "handle a single item" in {
       val v = IndexedSeq("lorem")
       val ans = Monoid.foldMapV(v, Monoid.stringConcatenation)(identity)
-      assert(ans === "lorem")
+      assert(ans == "lorem")
     }
 
     "handle even sequences" in {
       val v = IndexedSeq("lorem", "ipsum", "dolor", "sit")
       val ans = Monoid.foldMapV(v, Monoid.stringConcatenation)(identity)
-      assert(ans === "loremipsumdolorsit")
+      assert(ans == "loremipsumdolorsit")
     }
 
     "handle odd sequences" in {
       val v = IndexedSeq("lorem", "ipsum", "dolor", "sit", "blah")
       val ans = Monoid.foldMapV(v, Monoid.stringConcatenation)(identity)
-      assert(ans === "loremipsumdolorsitblah")
+      assert(ans == "loremipsumdolorsitblah")
     }
   }
 
   "sorted int" in {
-    assert(Monoid.isSorted(IndexedSeq()) === true)
-    assert(Monoid.isSorted(IndexedSeq(1)) === true)
-    assert(Monoid.isSorted(IndexedSeq(1, 2, 3, 4)) === true)
-    assert(Monoid.isSorted(IndexedSeq(1, 2, 4, 3)) === false)
-//    assert(Monoid.isSorted(IndexedSeq(4, 3, 2, 1)) === true)
+    assert(Monoid.isSorted(IndexedSeq()) == true)
+    assert(Monoid.isSorted(IndexedSeq(1)) == true)
+    assert(Monoid.isSorted(IndexedSeq(1, 2, 3, 4)) == true)
+    assert(Monoid.isSorted(IndexedSeq(1, 2, 4, 3)) == false)
+//    assert(Monoid.isSorted(IndexedSeq(4, 3, 2, 1)) == true)
   }
 
   "monoid laws" - {
@@ -149,6 +149,6 @@ class Chapter10Test extends FreeSpec {
 
   "bag" in {
     val ans = Monoid.bag(Vector("a", "rose", "is", "a", "rose"))
-    assert(ans === Map("a" -> 2, "rose" -> 2, "is" -> 1))
+    assert(ans == Map("a" -> 2, "rose" -> 2, "is" -> 1))
   }
 }
