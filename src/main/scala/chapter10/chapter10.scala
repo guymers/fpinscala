@@ -191,8 +191,10 @@ case class Part(lStub: String, words: Int, rStub: String) extends WC
 
 
 trait Foldable[F[_]] {
-  def foldRight[A, B](as: F[A])(z: B)(f: (A, B) => B): B
   def foldLeft[A, B](as: F[A])(z: B)(f: (B, A) => B): B
+  def foldRight[A, B](as: F[A])(z: B)(f: (A, B) => B): B = {
+    foldMap(as)(f.curried)(Monoid.endoMonoid[B])(z)
+  }
   def foldMap[A, B](as: F[A])(f: A => B)(mb: Monoid[B]): B = {
     foldLeft(as)(mb.zero) { case (acc, v) => mb.op(acc, f(v)) }
   }
