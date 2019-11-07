@@ -97,11 +97,21 @@ object Par {
   }
 
   // specialized version of `map`
-  def map[A,B](p: Par[A])(f: A => B): Par[B] =
+  def map[A,B](p: Par[A])(f: A => B): Par[B] = {
     es => new Future[B] {
-      def apply(cb: B => Unit, onError: Throwable => Unit): Unit =
+      def apply(cb: B => Unit, onError: Throwable => Unit): Unit = {
         p(es)(a => eval(es)(cb(f(a)), onError), onError)
+      }
     }
+  }
+
+  def flatMap[A,B](p: Par[A])(f: A => Par[B]): Par[B] = {
+    es => new Future[B] {
+      def apply(cb: B => Unit, onError: Throwable => Unit): Unit = {
+        p(es)(a => f(a)(es)(cb, onError), onError)
+      }
+    }
+  }
 
   def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
